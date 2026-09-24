@@ -19,11 +19,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check latest AuthG release and update Cask
+        env:
+          # Authenticated: anonymous API calls from shared runners get rate-limited
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
-          RELEASE_JSON=$(curl -sSL https://api.github.com/repos/abhidhakal/authg-app/releases/latest)
-          LATEST_TAG=$(echo "$RELEASE_JSON" | grep '"tag_name":' | head -n1 | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
+          LATEST_TAG=$(gh release view -R abhidhakal/authg-app --json tagName --jq .tagName)
           LATEST_VERSION=$(echo "$LATEST_TAG" | sed 's/^v//')
 
           if [ -z "$LATEST_VERSION" ]; then
@@ -45,10 +47,10 @@ jobs:
           X64_URL="https://github.com/abhidhakal/authg-app/releases/download/${LATEST_TAG}/AuthG_${LATEST_VERSION}_x64.dmg"
 
           echo "Fetching ARM64 DMG: $ARM_URL"
-          ARM_SHA=$(curl -sSL "$ARM_URL" | shasum -a 256 | awk '{print $1}')
+          ARM_SHA=$(curl -fsSL "$ARM_URL" | shasum -a 256 | awk '{print $1}')
 
           echo "Fetching x64 DMG: $X64_URL"
-          X64_SHA=$(curl -sSL "$X64_URL" | shasum -a 256 | awk '{print $1}')
+          X64_SHA=$(curl -fsSL "$X64_URL" | shasum -a 256 | awk '{print $1}')
 
           if [ -z "$ARM_SHA" ] || [ -z "$X64_SHA" ]; then
             echo "Failed to compute checksums."
