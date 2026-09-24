@@ -59,33 +59,33 @@ jobs:
           echo "New x64 SHA:   $X64_SHA"
 
           cat <<CASK > Casks/authg.rb
-cask "authg" do
-  version "${LATEST_VERSION}"
+          cask "authg" do
+            version "${LATEST_VERSION}"
 
-  if Hardware::CPU.arm?
-    url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_aarch64.dmg",
-    sha256 "${ARM_SHA}"
-  else
-    url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_x64.dmg",
-    sha256 "${X64_SHA}"
-  end
+            if Hardware::CPU.arm?
+              url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_aarch64.dmg"
+              sha256 "${ARM_SHA}"
+            else
+              url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_x64.dmg"
+              sha256 "${X64_SHA}"
+            end
 
-  name "AuthG"
-  desc "Open-source, offline desktop 2FA authenticator for the menu bar"
-  homepage "https://authg.abhinavdhakal.com"
+            name "AuthG"
+            desc "Open-source, offline desktop 2FA authenticator for the menu bar"
+            homepage "https://authg.abhinavdhakal.com"
 
-  depends_on macos: :big_sur
+            depends_on macos: :big_sur
 
-  app "AuthG.app"
+            app "AuthG.app"
 
-  zap trash: [
-    "~/Library/Application Support/com.authg.desktop",
-    "~/Library/Caches/com.authg.desktop",
-    "~/Library/Preferences/com.authg.desktop.plist",
-    "~/Library/WebKit/com.authg.desktop",
-  ]
-end
-CASK
+            zap trash: [
+              "~/Library/Application Support/com.authg.desktop",
+              "~/Library/Caches/com.authg.desktop",
+              "~/Library/Preferences/com.authg.desktop.plist",
+              "~/Library/WebKit/com.authg.desktop",
+            ]
+          end
+          CASK
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
