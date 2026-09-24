@@ -1,12 +1,12 @@
 cask "authg" do
-  version "1.0.6"
+  version "1.1.1"
 
   if Hardware::CPU.arm?
     url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_aarch64.dmg"
-    sha256 "63a2aae47318e3f412c28042de8b32d06d5b22b6b678daeaa8a18404c6c25244"
+    sha256 "3f9f4b408decff8a114e8543f08ea5d451e65ecba5ecba79185e588c4f8d1e10"
   else
     url "https://github.com/abhidhakal/authg-app/releases/download/v#{version}/AuthG_#{version}_x64.dmg"
-    sha256 "9461afc7fb4fca75112b0ca23bac414cd435e4ae538c488ec45b18853f5f3ea0"
+    sha256 "45de54c092f5ba08d5992a9748b036a3fc361e0ca1fcaa65297457d30ae51575"
   end
 
   name "AuthG"
